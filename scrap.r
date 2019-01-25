@@ -21,7 +21,7 @@ for (i in 1:pageNum_max) {
   
   linksRaw <- dataExtracted %>% html_nodes("a") %>% html_attr("href")
   
-  for (k in 1:length(headlines)){
+  for (k in 1:length(headlinesRaw)){
     headlines[t] <- headlinesRaw[[k]][3]
     links[t] <- linksRaw[k]
     t <- t+1
