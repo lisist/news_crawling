@@ -14,7 +14,7 @@ for (i in 1:pageNum_max) {
   
   ## setting url : in this case, yeonhap news
   url <- paste0("http://news.einfomax.co.kr/news/articleList.html?page=",pagenum,"&sc_section_code=S1N4")
-  data <- read_html(urlNews)
+  data <- read_html(url)
   
   dataExtracted <- html_nodes(data, ".table-row")
   headlinesRaw <- gsub("\t","",dataExtracted %>% html_text()) %>% strsplit("\n")
@@ -31,12 +31,11 @@ for (i in 1:pageNum_max) {
 ni <- function (num, link=links){
   ## ni function is to shows its content of selected headlines
   
-  url_for_content <- paste0("http://news.einformax.co.kr",link[num])
+  url_for_content <- paste0("http://news.einfomax.co.kr",link[num])
   
   newsContent_raw <- read_html(url_for_content)
   newsContent <- html_nodes(newsContent_raw,"#article-view-content-div")
   
-  newsContent <- gsub("\r","",gsub("\t","",newsContent %>% html_text()) %>% strsplit("\n")
+  newsContent <- gsub("\r","",gsub("\t","",newsContent %>% html_text())) %>% strsplit("\n")
   print(newsContent)
 }
-  
