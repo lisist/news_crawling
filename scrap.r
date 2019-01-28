@@ -3,10 +3,14 @@
 ## R code
 
 library(rvest)
+library(stringr)
+
 
 t <- 1
 headlines <- NULL  ## claim headline variables
 links <- NULL     ## claim links variables
+dates <- NULL	## claim date variables
+
 pageNum_max <- 2      ## number of pages intending to extract
 
 for (i in 1:pageNum_max) {
@@ -23,7 +27,10 @@ for (i in 1:pageNum_max) {
   
   for (k in 1:length(headlinesRaw)){
     headlines[t] <- headlinesRaw[[k]][3]
-    links[t] <- linksRaw[k]
+    
+    dates[t] <- str_extract(headlinesRaw[[k]][6],"[0-9]+-[0-9]+-[0-9]+")    ## extract dates
+    links[t] <- linksRaw[k]      ## extract links
+    
     t <- t+1
    }
 }
@@ -39,3 +46,13 @@ ni <- function (num, link=links){
   newsContent <- gsub("\r","",gsub("\t","",newsContent %>% html_text())) %>% strsplit("\n")
   print(newsContent)
 }
+
+
+## make csv files
+
+write.csv(headlines,"headlines.csv")  
+write.csv(links,"links.csv")
+write.csv(dates,"dates.csv")
+
+
+
