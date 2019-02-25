@@ -2,12 +2,16 @@ import pandas as pd
 import bs4 as bs
 import requests
 import os
-import csv
+import warnings
+import datetime as dt
+
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 def newspanel(pageNum_max=2) :
 
    headlines = []
    links = []
+
 
    for pagenum in range(1,pageNum_max+1):
 
@@ -27,10 +31,10 @@ def newspanel(pageNum_max=2) :
 
    df = {'Headlines':headlines,'links':links}
    newspanel = pd.DataFrame(df)
-
    newspanel.dropna(inplace=True)
    newspanel.to_csv('newsdata.csv',index=False)
 
+   print("New News updated\n")
 
 
 def show_headlines():
@@ -61,10 +65,12 @@ def ni(index_num=1):
 
    ## bookmarking already read news
 
-   BookmarkHeadline = content[20:100]
-   BookmarkHeadline = BookmarkHeadline.replace('\n','')
+   BookmarkHeadline_list = list(df['Headlines'])
+   BookmarkHeadline = BookmarkHeadline_list[index_num]
 
-   BookmarkDic = {"Links":[link],"Headlines":[BookmarkHeadline]}
+   now = dt.datetime.now()
+   Bookmarkdate = str(now)[0:10]
+   BookmarkDic = {"Headlines":[BookmarkHeadline],"Date":[Bookmarkdate],"Links":[link]}
    BookmarkDataFrame = pd.DataFrame(BookmarkDic)
 
 
@@ -80,28 +86,38 @@ def ni(index_num=1):
 
       BookmarkDF_prior.to_csv('news_bookmark.csv',index=False)
 
+def shell():
+   os.system('cls')
+   while True:
+      a = input("> ")
 
-while True:
-   print('\n-----------------------------------------')
-   print('1. Newscawling (type : news)             ')
-   print('2. Show headlines (type : headlines)     ')
-   print('3. Show content (type ni(숫자)           ')
-   print('4. Quit (type q)                         ')
-   print('-----------------------------------------')
-   a = input("which : ")
-   print('\n')
+      if (a == 'q'):
+         break
+      elif (a == 'news'):
+         newspanel(2)
+      elif (a == 'headlines'):
+         show_headlines()
+         k = 0
+         while True:
+            a = input('headlines > articles > ')
+            if (a == 'headlines'):
+               show_headlines()
+            elif (a == 'back'):
+               break
+            elif (a == 'n'):
+               ni(int(k) + 1)
+               k = k + 1
+            elif (a == 'b'):
+               if (k == 0):
+                  k = 1
+               ni(int(k) - 1)
+               k = k - 1
 
-   if (a=='q'):
-      break
-   elif (a=='news'):
-      newspanel(2)
-   elif (a=='headlines'):
-      show_headlines()
-      print('------------------------------------------')
-      print('want to back to headlines (type headlines)')
-      print('------------------------------------------')
-      a = input('which articles : ')
-      if (a=='headlines'):
-         headlines()
-      else:
-         ni(int(a))
+            else:
+               try:
+                  ni(int(a))
+                  k = int(a)
+               except:
+                  True
+
+shell()
