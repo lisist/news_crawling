@@ -81,7 +81,7 @@ def ni(index_num=1):
       link_prior = BookmarkDF_prior['Links']
       headlines_priror = BookmarkDF_prior['Headlines']
 
-      current = [link, BookmarkHeadline]
+      current = [BookmarkHeadline, Bookmarkdate, link]
       BookmarkDF_prior.loc[len(BookmarkDF_prior),:] = current
 
       BookmarkDF_prior.to_csv('news_bookmark.csv',index=False)
