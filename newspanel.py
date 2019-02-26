@@ -8,8 +8,7 @@ import datetime as dt
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 def newspanel(pageNum_max=2) :
-
-   headlines = []
+k   headlines = []
    links = []
 
 
@@ -88,36 +87,31 @@ def ni(index_num=1):
 
 def shell():
    os.system('cls')
+   newspanel(2)
+   show_headlines()
+   k = 0
    while True:
-      a = input("> ")
-
-      if (a == 'q'):
+      a = input('> ')
+      if (a == 'headlines'):
+         show_headlines()
+      elif (a == 'q'):
          break
+      elif (a == 'n'):
+         ni(int(k) + 1)
+         k = k + 1
       elif (a == 'news'):
          newspanel(2)
-      elif (a == 'headlines'):
-         show_headlines()
-         k = 0
-         while True:
-            a = input('headlines > articles > ')
-            if (a == 'headlines'):
-               show_headlines()
-            elif (a == 'back'):
-               break
-            elif (a == 'n'):
-               ni(int(k) + 1)
-               k = k + 1
-            elif (a == 'b'):
-               if (k == 0):
-                  k = 1
-               ni(int(k) - 1)
-               k = k - 1
-
-            else:
-               try:
-                  ni(int(a))
-                  k = int(a)
-               except:
-                  True
+      elif (a == 'b'):
+         if (k == 0):
+            k = 1
+         ni(int(k) - 1)
+         k = k - 1
+      else:
+         try:
+            ni(int(a))
+            k = int(a)
+         except:
+            True
 
 shell()
+
