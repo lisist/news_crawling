@@ -8,7 +8,7 @@ import datetime as dt
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 def newspanel(pageNum_max=2) :
-k   headlines = []
+   headlines = []
    links = []
 
 
